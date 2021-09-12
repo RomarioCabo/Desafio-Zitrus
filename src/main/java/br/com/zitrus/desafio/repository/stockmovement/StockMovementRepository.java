@@ -1,4 +1,4 @@
-package br.com.zitrus.desafio.repository;
+package br.com.zitrus.desafio.repository.stockmovement;
 
 import br.com.zitrus.desafio.domain.StockMovement;
 import org.springframework.data.jpa.repository.JpaRepository;

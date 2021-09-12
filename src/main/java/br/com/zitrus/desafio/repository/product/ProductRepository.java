@@ -1,4 +1,4 @@
-package br.com.zitrus.desafio.repository;
+package br.com.zitrus.desafio.repository.product;
 
 import br.com.zitrus.desafio.domain.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
