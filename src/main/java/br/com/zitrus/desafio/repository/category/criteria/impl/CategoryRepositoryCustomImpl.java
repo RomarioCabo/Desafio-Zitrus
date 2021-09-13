@@ -1,6 +1,6 @@
 package br.com.zitrus.desafio.repository.category.criteria.impl;
 
-import br.com.zitrus.desafio.domain.Category;
+import br.com.zitrus.desafio.domain.category.Category;
 import br.com.zitrus.desafio.domain.Category_;
 import br.com.zitrus.desafio.repository.category.criteria.CategoryRepositoryCustom;
 import br.com.zitrus.desafio.repository.category.criteria.pojo.CategoryFilter;
@@ -34,7 +34,7 @@ public class CategoryRepositoryCustomImpl implements CategoryRepositoryCustom {
         Root<Category> root = criteriaQuery.from(Category.class);
 
         criteriaQuery.multiselect(
-                root.get(Category_.ID),
+                root.get(Category_.ID_CATEGORY),
                 root.get(Category_.NAME),
                 root.get(Category_.CREATED_AT),
                 root.get(Category_.UPDATED_AT)
@@ -43,7 +43,7 @@ public class CategoryRepositoryCustomImpl implements CategoryRepositoryCustom {
         List<Predicate> predicates = new ArrayList<>();
 
         if (filter.getId() != null) {
-            predicates.add(criteriaBuilder.equal(root.get(Category_.ID), filter.getId()));
+            predicates.add(criteriaBuilder.equal(root.get(Category_.ID_CATEGORY), filter.getId()));
         }
 
         if (filter.getName() != null) {
@@ -80,6 +80,6 @@ public class CategoryRepositoryCustomImpl implements CategoryRepositoryCustom {
             return Category_.NAME;
         }
 
-        return Category_.ID;
+        return Category_.ID_CATEGORY;
     }
 }

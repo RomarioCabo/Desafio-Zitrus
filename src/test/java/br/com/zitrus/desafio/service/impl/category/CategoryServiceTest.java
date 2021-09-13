@@ -1,6 +1,6 @@
 package br.com.zitrus.desafio.service.impl.category;
 
-import br.com.zitrus.desafio.domain.Category;
+import br.com.zitrus.desafio.domain.category.Category;
 import br.com.zitrus.desafio.exception.BadRequestException;
 import br.com.zitrus.desafio.exception.InternalServerErrorException;
 import br.com.zitrus.desafio.repository.category.CategoryRepository;

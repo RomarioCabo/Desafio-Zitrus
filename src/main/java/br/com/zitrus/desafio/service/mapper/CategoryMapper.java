@@ -1,6 +1,6 @@
 package br.com.zitrus.desafio.service.mapper;
 
-import br.com.zitrus.desafio.domain.Category;
+import br.com.zitrus.desafio.domain.category.Category;
 import br.com.zitrus.desafio.service.pojo.dto.category.CategoryDto;
 import br.com.zitrus.desafio.service.pojo.form.category.CategoryForm;
 
@@ -15,6 +15,7 @@ public interface CategoryMapper {
 
   Category toEntity(CategoryForm categoryForm);
 
+  @Mapping(target = "id", source = "category.idCategory")
   CategoryDto toDto(Category category);
 
   List<CategoryDto> toDto(List<Category> categories);

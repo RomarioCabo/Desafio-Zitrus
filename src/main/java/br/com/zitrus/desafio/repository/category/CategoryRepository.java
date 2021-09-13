@@ -1,6 +1,6 @@
 package br.com.zitrus.desafio.repository.category;
 
-import br.com.zitrus.desafio.domain.Category;
+import br.com.zitrus.desafio.domain.category.Category;
 import br.com.zitrus.desafio.repository.category.criteria.CategoryRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

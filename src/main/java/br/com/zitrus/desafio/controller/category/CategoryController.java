@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiResponses;
 import javax.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/api/v1/category")
@@ -29,6 +29,9 @@ import java.util.List;
 public class CategoryController extends ApiHelper<CategoryDto> {
 
     private final CategoryService categoryService;
+
+    @Value("${application.url}")
+    private String url;
 
     @ApiResponses(
             value = {
@@ -44,7 +47,7 @@ public class CategoryController extends ApiHelper<CategoryDto> {
     public ResponseEntity<CategoryDto> save(@Valid @RequestBody CategoryForm request) {
         CategoryDto categoryDto = categoryService.save(request, null);
 
-        return ResponseEntity.created(null).body(categoryDto);
+        return ResponseEntity.created(getUri(url + "api/v1/category", "id={id}", categoryDto.getId())).body(categoryDto);
     }
 
     @ApiResponses(

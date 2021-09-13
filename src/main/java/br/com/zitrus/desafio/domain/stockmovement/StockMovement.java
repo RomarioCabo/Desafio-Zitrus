@@ -1,9 +1,10 @@
-package br.com.zitrus.desafio.domain;
+package br.com.zitrus.desafio.domain.stockmovement;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import javax.persistence.*;
 
+import br.com.zitrus.desafio.domain.product.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +22,8 @@ public class StockMovement  {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  @Column(name = "id_stock_movement")
+  private long idStockMovement;
 
   @ManyToOne
   @JoinColumn(name = "id_product", nullable = false)

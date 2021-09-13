@@ -2,7 +2,7 @@ package br.com.zitrus.desafio.service.impl.category;
 
 import static java.util.Objects.isNull;
 
-import br.com.zitrus.desafio.domain.Category;
+import br.com.zitrus.desafio.domain.category.Category;
 import br.com.zitrus.desafio.exception.BadRequestException;
 import br.com.zitrus.desafio.exception.InternalServerErrorException;
 import br.com.zitrus.desafio.repository.category.CategoryRepository;
@@ -116,7 +116,7 @@ public class CategoryService implements CrudInterface<CategoryDto, CategoryForm,
             if (!isNull(id)) {
                 Optional<Category> categoryOptional = categoryRepository.findById(id);
 
-                category.setId(id);
+                category.setIdCategory(id);
                 category.setCreatedAt(categoryOptional.get().getCreatedAt());
                 category.setUpdatedAt(LocalDateTime.now());
             }

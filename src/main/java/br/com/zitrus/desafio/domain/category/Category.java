@@ -1,10 +1,11 @@
-package br.com.zitrus.desafio.domain;
+package br.com.zitrus.desafio.domain.category;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
+import br.com.zitrus.desafio.domain.product.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +26,8 @@ public class Category {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  @Column(name = "id_category")
+  private long idCategory;
 
   @Column(name = "name", nullable = false, unique = true)
   private String name;

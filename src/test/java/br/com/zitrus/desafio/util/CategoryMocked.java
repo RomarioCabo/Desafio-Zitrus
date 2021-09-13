@@ -1,6 +1,6 @@
 package br.com.zitrus.desafio.util;
 
-import br.com.zitrus.desafio.domain.Category;
+import br.com.zitrus.desafio.domain.category.Category;
 import br.com.zitrus.desafio.service.pojo.dto.category.CategoryDto;
 import br.com.zitrus.desafio.service.pojo.form.category.CategoryForm;
 
@@ -17,7 +17,7 @@ public class CategoryMocked {
 
     public static Category builderCategory() {
         return Category.builder()
-                .id(1L)
+                .idCategory(1L)
                 .name("Categoria Mocked")
                 .createdAt(LocalDateTime.parse("2021-09-11T18:29:56.899449"))
                 .build();
