@@ -13,13 +13,13 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductFilter implements Serializable {
-    private static final long serialVersionUID = 2653309884011799079L;
+  private static final long serialVersionUID = 2653309884011799079L;
 
-    private Long idProduct;
-    private String nameProduct;
-    private BigDecimal supplierValue;
-    private Integer quantityStock;
+  private Long idProduct;
+  private String nameProduct;
+  private BigDecimal supplierValue;
+  private Integer quantityStock;
 
-    private Long idCategory;
-    private String nameCategory;
+  private Long idCategory;
+  private String nameCategory;
 }

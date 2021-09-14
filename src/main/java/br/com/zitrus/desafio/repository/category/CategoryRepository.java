@@ -7,7 +7,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public interface CategoryRepository extends JpaRepository<Category, Long>, CategoryRepositoryCustom {
+public interface CategoryRepository
+    extends JpaRepository<Category, Long>, CategoryRepositoryCustom {
 
   @Transactional(readOnly = true)
   boolean existsByName(String name);

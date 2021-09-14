@@ -12,8 +12,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryFilter implements Serializable {
-    private static final long serialVersionUID = -7105747450437931552L;
+  private static final long serialVersionUID = -7105747450437931552L;
 
-    private Long id;
-    private String name;
+  private Long id;
+  private String name;
 }

@@ -8,5 +8,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface ProductRepositoryCustom {
 
-    Page<ProductDto> filterProduct(ProductFilter filter, Pageable pageable, Direction direction);
+  Page<ProductDto> filterProduct(ProductFilter filter, Pageable pageable, Direction direction);
 }

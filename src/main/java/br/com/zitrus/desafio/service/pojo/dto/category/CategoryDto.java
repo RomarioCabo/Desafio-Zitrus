@@ -19,9 +19,9 @@ public class CategoryDto implements Serializable {
   private long id;
   private String name;
 
-  @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
+  @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
   private LocalDateTime createdAt;
 
-  @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
+  @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
   private LocalDateTime updatedAt;
 }

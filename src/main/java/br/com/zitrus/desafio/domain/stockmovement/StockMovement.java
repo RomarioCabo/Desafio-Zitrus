@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StockMovement  {
+public class StockMovement {
 
   private static final long serialVersionUID = 549138284534763022L;
 
@@ -32,12 +32,12 @@ public class StockMovement  {
   @Column(name = "movement_type", nullable = false)
   private String movementType;
 
-  @Column(name = "sale_value", nullable = false, precision = 12, scale = 2)
+  @Column(name = "sale_value", precision = 12, scale = 2)
   private BigDecimal saleValue;
 
-  @Column(name = "sale_date", nullable = false)
+  @Column(name = "sale_date")
   private LocalDateTime saleDate;
 
-  @Column(name = "amount_moved", nullable = false)
-  private long amountMoved;
+  @Column(name = "amount_moved")
+  private Integer amountMoved;
 }

@@ -28,105 +28,150 @@ import static java.util.Objects.isNull;
 @RequiredArgsConstructor
 public class ProductService implements CrudInterface<ProductDto, ProductForm, ProductFilter> {
 
-    private final ProductRepository productRepository;
-    private final ProductMapper productMapper;
+  private final ProductRepository productRepository;
+  private final ProductMapper productMapper;
 
-    @Override
-    public ProductDto save(ProductForm form, Long id) {
-        productAlreadyExists(form.getName());
+  @Override
+  public ProductDto save(ProductForm form, Long id) {
+    productAlreadyExists(form.getName());
 
-        productNotFound(id);
+    productNotFound(id);
 
-        return mapperProduct(save(mapperProduct(form, id)));
+    return mapperProduct(save(mapperProduct(form, id)));
+  }
+
+  @Override
+  public void delete(Long id) {
+    productNotFound(id);
+
+    try {
+      productRepository.deleteById(id);
+    } catch (Exception e) {
+      throw new InternalServerErrorException("Não foi possível salvar!");
+    }
+  }
+
+  @Override
+  public Page<ProductDto> find(
+      ProductFilter productFilter,
+      Integer page,
+      Integer linesPerPage,
+      String sortBy,
+      Direction direction) {
+    try {
+      Pageable pageable = PageRequest.of(page, linesPerPage, Sort.by(sortBy));
+
+      Page<ProductDto> productsPage =
+          productRepository.filterProduct(productFilter, pageable, direction);
+
+      if (productsPage.isEmpty()) {
+        return null;
+      }
+
+      return productsPage;
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new InternalServerErrorException("Não foi possível retornar a lista de produtos!");
+    }
+  }
+
+  private void productAlreadyExists(String nameProduct) {
+    if (productRepository.existsByName(nameProduct)) {
+      throw new BadRequestException("Produto já cadastrada em nossa base de dados!");
+    }
+  }
+
+  public void productNotFound(Long id) {
+    if (!isNull(id)) {
+      Optional<Product> product = productRepository.findById(id);
+
+      if (!product.isPresent()) {
+        throw new BadRequestException("Produto não localizado em nossa base de dados!");
+      }
+    }
+  }
+
+  public Product getProduct(Long id) {
+
+    Optional<Product> product = productRepository.findById(id);
+
+    if (!product.isPresent()) {
+      throw new BadRequestException("Produto não localizado em nossa base de dados!");
     }
 
-    @Override
-    public void delete(Long id) {
-        productNotFound(id);
+    return product.get();
+  }
 
-        try {
-            productRepository.deleteById(id);
-        } catch (Exception e) {
-            throw new InternalServerErrorException("Não foi possível salvar!");
-        }
+  public Product findProductById(Long id) {
+    Optional<Product> product = productRepository.findById(id);
+
+    return product.orElse(null);
+  }
+
+  public void incrementAmountStock(Long id, int quantity) {
+    try {
+      Product product = getProduct(id);
+      product.setQuantityStock(product.getQuantityStock() + quantity);
+      product.setUpdatedAt(LocalDateTime.now());
+    } catch (Exception e) {
+      throw new InternalServerErrorException("Não foi possível atualizar a quantidade do estoque!");
+    }
+  }
+
+  public void decrementAmountStock(Long id, int amountMoved) {
+
+    Product product = getProduct(id);
+
+    if (product.getQuantityStock() == 0) {
+      throw new BadRequestException("Produto indisponíve no estoque!");
     }
 
-    @Override
-    public Page<ProductDto> find(ProductFilter productFilter,
-                                 Integer page,
-                                 Integer linesPerPage,
-                                 String sortBy,
-                                 Direction direction) {
-        try {
-            Pageable pageable = PageRequest.of(page, linesPerPage, Sort.by(sortBy));
-
-            Page<ProductDto> productsPage = productRepository.filterProduct(productFilter, pageable, direction);
-
-            if (productsPage.isEmpty()) {
-                return null;
-            }
-
-            return productsPage;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new InternalServerErrorException("Não foi possível retornar a lista de produtos!");
-        }
+    if (amountMoved > product.getQuantityStock()) {
+      throw new BadRequestException("Quantidade em estoque é menor que a qauntidade informada");
     }
 
-    private void productAlreadyExists(String nameProduct) {
-        if (productRepository.existsByName(nameProduct)) {
-            throw new BadRequestException("Produto já cadastrada em nossa base de dados!");
-        }
+    product.setQuantityStock(product.getQuantityStock() - amountMoved);
+    product.setUpdatedAt(LocalDateTime.now());
+  }
+
+  private Product save(Product product) {
+    try {
+      return productRepository.save(product);
+    } catch (Exception e) {
+      throw new InternalServerErrorException("Não foi possível salvar!");
     }
+  }
 
-    private void productNotFound(Long id) {
-        if (!isNull(id)) {
-            Optional<Product> product = productRepository.findById(id);
+  private Product mapperProduct(ProductForm form, Long id) {
+    try {
+      Product product;
 
-            if (!product.isPresent()) {
-                throw new BadRequestException("Produto não localizado em nossa base de dados!");
-            }
-        }
+      product = productMapper.toEntity(form);
+
+      if (isNull(id)) {
+        product.setCreatedAt(LocalDateTime.now());
+      }
+
+      if (!isNull(id)) {
+        Optional<Product> productOptional = productRepository.findById(id);
+
+        product.setIdProduct(id);
+        product.setCreatedAt(productOptional.get().getCreatedAt());
+        product.setUpdatedAt(LocalDateTime.now());
+      }
+
+      return product;
+    } catch (Exception e) {
+      throw new InternalServerErrorException("Não foi possível realizar o Mapper para entidade!");
     }
+  }
 
-    private Product save(Product product) {
-        try {
-            return productRepository.save(product);
-        } catch (Exception e) {
-            throw new InternalServerErrorException("Não foi possível salvar!");
-        }
+  private ProductDto mapperProduct(Product product) {
+    try {
+      return productMapper.toDto(product);
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new InternalServerErrorException("Não foi possível realizar o Mapper para DTO!");
     }
-
-    private Product mapperProduct(ProductForm form, Long id) {
-        try {
-            Product product;
-
-            product = productMapper.toEntity(form);
-
-            if (isNull(id)) {
-                product.setCreatedAt(LocalDateTime.now());
-            }
-
-            if (!isNull(id)) {
-                Optional<Product> productOptional = productRepository.findById(id);
-
-                product.setIdProduct(id);
-                product.setCreatedAt(productOptional.get().getCreatedAt());
-                product.setUpdatedAt(LocalDateTime.now());
-            }
-
-            return product;
-        } catch (Exception e) {
-            throw new InternalServerErrorException("Não foi possível realizar o Mapper para entidade!");
-        }
-    }
-
-    private ProductDto mapperProduct(Product product) {
-        try {
-            return productMapper.toDto(product);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new InternalServerErrorException("Não foi possível realizar o Mapper para DTO!");
-        }
-    }
+  }
 }

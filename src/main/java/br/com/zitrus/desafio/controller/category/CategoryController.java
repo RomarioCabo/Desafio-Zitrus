@@ -28,71 +28,76 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryController extends ApiHelper<CategoryDto> {
 
-    private final CategoryService categoryService;
+  private final CategoryService categoryService;
 
-    @Value("${application.url}")
-    private String url;
+  @Value("${application.url}")
+  private String url;
 
-    @ApiResponses(
-            value = {
-                    @ApiResponse(code = 201, message = "Created", response = CategoryDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request", response = StandardError.class),
-                    @ApiResponse(code = 500, message = "Internal Error", response = StandardError.class)
-            })
-    @PostMapping(
-            value = "/save",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(value = HttpStatus.CREATED)
-    public ResponseEntity<CategoryDto> save(@Valid @RequestBody CategoryForm request) {
-        CategoryDto categoryDto = categoryService.save(request, null);
+  @ApiResponses(
+      value = {
+        @ApiResponse(code = 201, message = "Created", response = CategoryDto.class),
+        @ApiResponse(code = 400, message = "Bad Request", response = StandardError.class),
+        @ApiResponse(code = 500, message = "Internal Error", response = StandardError.class)
+      })
+  @PostMapping(
+      value = "/save",
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(value = HttpStatus.CREATED)
+  public ResponseEntity<CategoryDto> save(@Valid @RequestBody CategoryForm request) {
+    CategoryDto categoryDto = categoryService.save(request, null);
 
-        return ResponseEntity.created(getUri(url + "api/v1/category", "id={id}", categoryDto.getId())).body(categoryDto);
-    }
+    return ResponseEntity.created(getUri(url + "api/v1/category", "id={id}", categoryDto.getId()))
+        .body(categoryDto);
+  }
 
-    @ApiResponses(
-            value = {
-                    @ApiResponse(code = 200, message = "Updated", response = CategoryDto.class),
-                    @ApiResponse(code = 400, message = "Bad Request", response = StandardError.class),
-                    @ApiResponse(code = 500, message = "Internal Error", response = StandardError.class)
-            })
-    @PutMapping(
-            value = "/update/{idCategory}",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CategoryDto> update(@PathVariable Long idCategory,
-                                              @Valid @RequestBody CategoryForm request) {
+  @ApiResponses(
+      value = {
+        @ApiResponse(code = 200, message = "Updated", response = CategoryDto.class),
+        @ApiResponse(code = 400, message = "Bad Request", response = StandardError.class),
+        @ApiResponse(code = 500, message = "Internal Error", response = StandardError.class)
+      })
+  @PutMapping(
+      value = "/update/{idCategory}",
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<CategoryDto> update(
+      @PathVariable Long idCategory, @Valid @RequestBody CategoryForm request) {
 
-        return ResponseEntity.ok(categoryService.save(request, idCategory));
-    }
+    return ResponseEntity.ok(categoryService.save(request, idCategory));
+  }
 
-    @ApiResponses(
-            value = {
-                    @ApiResponse(code = 200, message = "Deleted"),
-                    @ApiResponse(code = 400, message = "Bad Request", response = StandardError.class),
-                    @ApiResponse(code = 500, message = "Internal Error", response = StandardError.class)
-            })
-    @DeleteMapping(value = "/delete/{idCategory}")
-    public ResponseEntity<Void> delete(@PathVariable Long idCategory) {
-        categoryService.delete(idCategory);
+  @ApiResponses(
+      value = {
+        @ApiResponse(code = 200, message = "Deleted"),
+        @ApiResponse(code = 400, message = "Bad Request", response = StandardError.class),
+        @ApiResponse(code = 500, message = "Internal Error", response = StandardError.class)
+      })
+  @DeleteMapping(value = "/delete/{idCategory}")
+  public ResponseEntity<Void> delete(@PathVariable Long idCategory) {
+    categoryService.delete(idCategory);
 
-        return ResponseEntity.ok().build();
-    }
+    return ResponseEntity.ok().build();
+  }
 
-    @ApiResponses(
-            value = {
-                    @ApiResponse(code = 200, message = "OK", response = CategoryDto[].class),
-                    @ApiResponse(code = 500, message = "Internal Error", response = StandardError.class)
-            })
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CategoryDto>> findCategories(@ModelAttribute CategoryFilter filters,
-                                                            @RequestParam(value = "page", defaultValue = "0") Integer page,
-                                                            @RequestParam(value = "linesPerPage", defaultValue = "10") Integer linesPerPage,
-                                                            @RequestParam(value = "orderBy", defaultValue = "name") String sortBy,
-                                                            @RequestParam(value = "direction", defaultValue = "ASC") Direction direction) {
+  @ApiResponses(
+      value = {
+        @ApiResponse(code = 200, message = "OK", response = CategoryDto[].class),
+        @ApiResponse(code = 500, message = "Internal Error", response = StandardError.class)
+      })
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<List<CategoryDto>> findCategories(
+      @ModelAttribute CategoryFilter filters,
+      @RequestParam(value = "page", defaultValue = "0") Integer page,
+      @RequestParam(value = "linesPerPage", defaultValue = "10") Integer linesPerPage,
+      @RequestParam(value = "orderBy", defaultValue = "name") String sortBy,
+      @RequestParam(value = "direction", defaultValue = "ASC") Direction direction) {
 
-        Page<CategoryDto> categoriesPage = categoryService.find(filters, page, linesPerPage, sortBy, direction);
+    Page<CategoryDto> categoriesPage =
+        categoryService.find(filters, page, linesPerPage, sortBy, direction);
 
-        return ResponseEntity.ok().headers(responseHeaders(categoriesPage)).body(categoriesPage.getContent());
-    }
+    return ResponseEntity.ok()
+        .headers(responseHeaders(categoriesPage))
+        .body(categoriesPage.getContent());
+  }
 }

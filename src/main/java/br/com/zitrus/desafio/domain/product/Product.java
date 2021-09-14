@@ -2,9 +2,12 @@ package br.com.zitrus.desafio.domain.product;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
 
 import br.com.zitrus.desafio.domain.category.Category;
+import br.com.zitrus.desafio.domain.stockmovement.StockMovement;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -46,4 +49,7 @@ public class Product {
 
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
+
+  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<StockMovement> stockMovement = new ArrayList<>();
 }

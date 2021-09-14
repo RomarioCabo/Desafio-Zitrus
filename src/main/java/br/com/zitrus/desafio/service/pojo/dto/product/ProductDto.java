@@ -16,17 +16,17 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDto implements Serializable {
-    private static final long serialVersionUID = 4800078331009671314L;
+  private static final long serialVersionUID = 4800078331009671314L;
 
-    private long id;
-    private String name;
-    private BigDecimal supplierValue;
-    private Integer quantityStock;
-    private CategoryDto category;
+  private long id;
+  private String name;
+  private BigDecimal supplierValue;
+  private Integer quantityStock;
+  private CategoryDto category;
 
-    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
-    private LocalDateTime createdAt;
+  @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+  private LocalDateTime createdAt;
 
-    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
-    private LocalDateTime updatedAt;
+  @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+  private LocalDateTime updatedAt;
 }

@@ -13,10 +13,10 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductForm implements Serializable {
-    private static final long serialVersionUID = -9100818929415120481L;
+  private static final long serialVersionUID = -9100818929415120481L;
 
-    private String name;
-    private BigDecimal supplierValue;
-    private short quantityStock;
-    private long idCategory;
+  private String name;
+  private BigDecimal supplierValue;
+  private short quantityStock;
+  private long idCategory;
 }
